@@ -1,175 +1,324 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jornada Pokémon: A Grande Escolha</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #2b2b2b;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .game-container {
-            background-color: #333;
-            border: 4px solid #ffcb05; /* Amarelo Pokémon */
-            border-radius: 12px;
-            padding: 25px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-        }
+<title>Pokémon - Escolha Certa!</title>
 
-        h1 {
-            color: #ffcb05;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-        .story-text {
-            font-size: 18px;
-            line-height: 1.5;
-            margin-bottom: 30px;
-            min-height: 100px;
-            background-color: #444;
-            padding: 15px;
-            border-radius: 8px;
-            border: 2px solid #555;
-        }
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ffcb05, #3b4cca);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
 
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+.game {
+    width: 100%;
+    max-width: 600px;
+    background: white;
+    border-radius: 25px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
 
-        button {
-            background-color: #3b4cca; /* Azul Pokémon */
-            color: white;
-            border: none;
-            padding: 15px 20px;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            font-weight: bold;
-        }
+h1 {
+    color: #3b4cca;
+    font-size: 38px;
+    margin-bottom: 10px;
+}
 
-        button:hover {
-            background-color: #2a3a9e;
-            transform: scale(1.02);
-        }
+.pokebola {
+    font-size: 70px;
+    margin-bottom: 10px;
+}
 
-        button:active {
-            transform: scale(0.98);
-        }
-    </style>
+#numero {
+    color: #777;
+    margin-bottom: 20px;
+}
+
+#pergunta {
+    font-size: 24px;
+    color: #222;
+    margin-bottom: 25px;
+    min-height: 60px;
+}
+
+.opcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.opcao {
+    border: none;
+    padding: 18px;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    background: #3b4cca;
+    color: white;
+    transition: 0.2s;
+}
+
+.opcao:hover {
+    transform: scale(1.03);
+    background: #2d3aa5;
+}
+
+#resultado {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    min-height: 30px;
+}
+
+#proximo {
+    display: none;
+    margin-top: 20px;
+    padding: 14px 25px;
+    border: none;
+    border-radius: 12px;
+    background: #ffcb05;
+    color: #222;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#pontuacao {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #3b4cca;
+}
+
+#final {
+    display: none;
+}
+
+#final h2 {
+    color: #3b4cca;
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+#reiniciar {
+    margin-top: 20px;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 12px;
+    background: #3b4cca;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
 </head>
+
 <body>
 
-    <div class="game-container">
-        <h1>Jornada Pokémon</h1>
-        
-        <!-- Caixas de Texto com a História -->
-        <div id="text" class="story-text">Carregando história...</div>
-        
-        <!-- Duas Opções Embaixo -->
-        <div class="options-container">
-            <button id="btn1" onclick="selectOption(1)">Opção 1</button>
-            <button id="btn2" onclick="selectOption(2)">Opção 2</button>
+<div class="game">
+
+    <div id="jogo">
+
+        <div class="pokebola">🔴⚪</div>
+
+        <h1>Pokémon!</h1>
+
+        <p id="numero">Pergunta 1</p>
+
+        <div id="pergunta"></div>
+
+        <div class="opcoes">
+            <button class="opcao" onclick="responder(0)" id="opcao1"></button>
+            <button class="opcao" onclick="responder(1)" id="opcao2"></button>
         </div>
+
+        <div id="resultado"></div>
+
+        <button id="proximo" onclick="proximaPergunta()">
+            Próxima pergunta ➡️
+        </button>
+
+        <div id="pontuacao">
+            Pontuação: 0
+        </div>
+
     </div>
 
-    <script>
-        // Estrutura das Fases/Cenas do Jogo
-        const storyData = {
-            inicio: {
-                text: "Você acabou de completar 10 anos e está no laboratório do Professor Carvalho. Ele te oferece seu primeiro Pokémon!",
-                btn1Text: "Escolher o Charmander 🔥",
-                btn1Next: "charmander",
-                btn2Text: "Escolher o Squirtle 💧",
-                btn2Next: "squirtle"
-            },
-            
-            // Caminho do Charmander
-            charmander: {
-                text: "Você escolheu Charmander! Enquanto caminhava pela Rota 1, um Pikachu selvagem e irritado aparece no meio da grama alta!",
-                btn1Text: "Usar o golpe 'Brasas'",
-                btn1Next: "charmander_atacar",
-                btn2Text: "Tentar capturar com uma Pokébola",
-                btn2Next: "charmander_capturar"
-            },
-            charmander_atacar: {
-                text: "O Brasas foi super efetivo! O Pikachu se assustou e fugiu. Você ganhou experiência e continua sua jornada como um mestre! (FIM DE JOGO - VITÓRIA)",
-                btn1Text: "Jogar Novamente",
-                btn1Next: "inicio",
-                btn2Text: "Jogar Novamente",
-                btn2Next: "inicio"
-            },
-            charmander_capturar: {
-                text: "Você jogou a Pokébola sem enfraquecê-lo! Pikachu quebrou a Pokébola, usou o 'Choque do Trovão' em você e fugiu. (FIM DE JOGO - DERROTA)",
-                btn1Text: "Tentar Novamente",
-                btn1Next: "inicio",
-                btn2Text: "Tentar Novamente",
-                btn2Next: "inicio"
-            },
+    <div id="final">
 
-            // Caminho do Squirtle
-            squirtle: {
-                text: "Você escolheu Squirtle! Na Rota 1, você encontra um membro da Equipe Rocket tentando roubar um Pidgey indefeso!",
-                btn1Text: "Desafiar o recruta para uma batalha",
-                btn1Next: "squirtle_batalhar",
-                btn2Text: "Correr para pedir ajuda na cidade",
-                btn2Next: "squirtle_fugir"
-            },
-            squirtle_batalhar: {
-                text: "Seu Squirtle usou 'Jato d'Água' no Rattata do vilão! A Equipe Rocket decolou de novo e você salvou o Pidgey! (FIM DE JOGO - VITÓRIA)",
-                btn1Text: "Jogar Novamente",
-                btn1Next: "inicio",
-                btn2Text: "Jogar Novamente",
-                btn2Next: "inicio"
-            },
-            squirtle_fugir: {
-                text: "Enquanto você foi buscar ajuda, a Equipe Rocket fugiu com o Pidgey. Você falhou em ajudar... (FIM DE JOGO - DERROTA)",
-                btn1Text: "Tentar Novamente",
-                btn1Next: "inicio",
-                btn2Text: "Tentar Novamente",
-                btn2Next: "inicio"
-            }
-        };
+        <div class="pokebola">🏆</div>
 
-        let currentStep = 'inicio';
+        <h2>Fim do jogo!</h2>
 
-        function renderStep() {
-            const step = storyData[currentStep];
-            document.getElementById('text').innerText = step.text;
-            
-            const btn1 = document.getElementById('btn1');
-            const btn2 = document.getElementById('btn2');
+        <p id="mensagemFinal"></p>
 
-            btn1.innerText = step.btn1Text;
-            btn2.innerText = step.btn2Text;
-        }
+        <button id="reiniciar" onclick="reiniciarJogo()">
+            Jogar novamente 🔄
+        </button>
 
-        function selectOption(optionNumber) {
-            const step = storyData[currentStep];
-            if (optionNumber === 1) {
-                currentStep = step.btn1Next;
-            } else if (optionNumber === 2) {
-                currentStep = step.btn2Next;
-            }
-            renderStep();
-        }
+    </div>
 
-        // Inicia o jogo
-        renderStep();
-    </script>
+</div>
+
+<script>
+
+const perguntas = [
+
+    {
+        pergunta: "Qual Pokémon é conhecido como o Pokémon elétrico?",
+        opcoes: ["Pikachu", "Squirtle"],
+        correta: 0
+    },
+
+    {
+        pergunta: "Qual destes Pokémon é do tipo água?",
+        opcoes: ["Charmander", "Squirtle"],
+        correta: 1
+    },
+
+    {
+        pergunta: "Qual Pokémon é conhecido por cuspir fogo?",
+        opcoes: ["Charmander", "Bulbasaur"],
+        correta: 0
+    },
+
+    {
+        pergunta: "Qual destes Pokémon é do tipo planta?",
+        opcoes: ["Bulbasaur", "Psyduck"],
+        correta: 0
+    },
+
+    {
+        pergunta: "Qual Pokémon evolui de Pichu?",
+        opcoes: ["Pikachu", "Eevee"],
+        correta: 0
+    },
+
+    {
+        pergunta: "Qual destes Pokémon pode evoluir para Vaporeon?",
+        opcoes: ["Eevee", "Mewtwo"],
+        correta: 0
+    }
+
+];
+
+let perguntaAtual = 0;
+let pontuacao = 0;
+let respondeu = false;
+
+function mostrarPergunta() {
+
+    respondeu = false;
+
+    const pergunta = perguntas[perguntaAtual];
+
+    document.getElementById("numero").textContent =
+        "Pergunta " + (perguntaAtual + 1) + " de " + perguntas.length;
+
+    document.getElementById("pergunta").textContent =
+        pergunta.pergunta;
+
+    document.getElementById("opcao1").textContent =
+        pergunta.opcoes[0];
+
+    document.getElementById("opcao2").textContent =
+        pergunta.opcoes[1];
+
+    document.getElementById("resultado").textContent = "";
+
+    document.getElementById("proximo").style.display = "none";
+
+    document.getElementById("opcao1").disabled = false;
+    document.getElementById("opcao2").disabled = false;
+}
+
+function responder(opcaoEscolhida) {
+
+    if (respondeu) return;
+
+    respondeu = true;
+
+    const pergunta = perguntas[perguntaAtual];
+
+    if (opcaoEscolhida === pergunta.correta) {
+
+        pontuacao++;
+
+        document.getElementById("resultado").textContent =
+            "✅ Acertou! Muito bem, treinador!";
+
+    } else {
+
+        document.getElementById("resultado").textContent =
+            "❌ Errou! Tente acertar a próxima!";
+
+    }
+
+    document.getElementById("pontuacao").textContent =
+        "Pontuação: " + pontuacao;
+
+    document.getElementById("opcao1").disabled = true;
+    document.getElementById("opcao2").disabled = true;
+
+    document.getElementById("proximo").style.display = "inline-block";
+}
+
+function proximaPergunta() {
+
+    perguntaAtual++;
+
+    if (perguntaAtual < perguntas.length) {
+
+        mostrarPergunta();
+
+    } else {
+
+        document.getElementById("jogo").style.display = "none";
+        document.getElementById("final").style.display = "block";
+
+        document.getElementById("mensagemFinal").textContent =
+            "Você fez " + pontuacao + " de " +
+            perguntas.length + " pontos!";
+
+    }
+}
+
+function reiniciarJogo() {
+
+    perguntaAtual = 0;
+    pontuacao = 0;
+
+    document.getElementById("jogo").style.display = "block";
+    document.getElementById("final").style.display = "none";
+
+    document.getElementById("pontuacao").textContent =
+        "Pontuação: 0";
+
+    mostrarPergunta();
+}
+
+mostrarPergunta();
+
+</script>
+
 </body>
 </html>
+```
